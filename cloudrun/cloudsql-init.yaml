@@ -1,0 +1,22 @@
+# Create this job from the same API image after a Cloud SQL instance exists.
+# It is idempotent: app.migrate enables pgvector and creates the initial schema.
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: reme-schema-init
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/cloudsql-instances: PROJECT_ID:REGION:reme-postgres
+    spec:
+      serviceAccountName: reme-api@PROJECT_ID.iam.gserviceaccount.com
+      maxRetries: 1
+      template:
+        spec:
+          containers:
+            - image: REGION-docker.pkg.dev/PROJECT_ID/reme/reme-api:latest
+              command: ["python", "-m", "app.migrate"]
+              env:
+                - name: DATABASE_URL
+                  valueFrom: { secretKeyRef: { name: reme-database-url, key: latest } }

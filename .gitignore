@@ -1,0 +1,36 @@
+.DS_Store
+._*
+*.swp
+.env
+node_modules
+.venv
+node_modules/
+.next/
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.env.local
+*.db
+coverage/
+test-results/
+.terraform/
+*.tfstate*
+*.tfvars
+
+# Local environment overrides and generated build metadata
+.env.*
+!.env.example
+*.tsbuildinfo
+
+# Keep videos out of version control
+*.[mM][pP]4
+*.[mM][oO][vV]
+*.[mM]4[vV]
+*.[wW][eE][bB][mM]
+*.[aA][vV][iI]
+*.[mM][kK][vV]
+*.[mM][pP][eE][gG]
+*.[mM][pP][gG]
+*.[wW][mM][vV]

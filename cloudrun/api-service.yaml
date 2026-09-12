@@ -1,0 +1,47 @@
+# Substitute PROJECT_ID, REGION, and resource names before applying. Secrets are
+# referenced by name only; their values never appear in this manifest.
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: reme-api
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/cloudsql-instances: PROJECT_ID:REGION:reme-postgres
+        autoscaling.knative.dev/maxScale: "10"
+    spec:
+      serviceAccountName: reme-api@PROJECT_ID.iam.gserviceaccount.com
+      containers:
+        - image: REGION-docker.pkg.dev/PROJECT_ID/reme/reme-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APP_ENV
+              value: production
+            - name: DEMO_MODE
+              value: "false"
+            - name: LLM_PROVIDER
+              value: openrouter
+            - name: OPENROUTER_MODEL
+              value: openai/gpt-5-mini
+            - name: OPENROUTER_EMBEDDING_MODEL
+              value: openai/text-embedding-3-small
+            - name: OPENROUTER_BASE_URL
+              value: https://openrouter.ai/api/v1
+            - name: PUBLIC_API_URL
+              value: https://reme-api-PROJECT_ID.REGION.run.app
+            - name: DATABASE_URL
+              valueFrom: { secretKeyRef: { name: reme-database-url, key: latest } }
+            - name: API_TOKEN
+              valueFrom: { secretKeyRef: { name: reme-api-token, key: latest } }
+            - name: OPENROUTER_API_KEY
+              valueFrom: { secretKeyRef: { name: reme-openrouter-api-key, key: latest } }
+            - name: EXA_API_KEY
+              valueFrom: { secretKeyRef: { name: reme-exa-api-key, key: latest } }
+            - name: TRIGGER_SECRET_KEY
+              valueFrom: { secretKeyRef: { name: reme-trigger-secret-key, key: latest } }
+            - name: TRIGGER_CALLBACK_TOKEN
+              valueFrom: { secretKeyRef: { name: reme-trigger-callback-token, key: latest } }

@@ -1,0 +1,12 @@
+{
+  "name": "reme-trigger-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx trigger.dev@latest dev",
+    "deploy": "npx trigger.dev@latest deploy"
+  },
+  "dependencies": {
+    "@trigger.dev/sdk": "4.5.16"
+  }
+}

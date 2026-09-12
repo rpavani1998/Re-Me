@@ -1,0 +1,10 @@
+fastapi>=0.115,<1
+uvicorn[standard]>=0.34,<1
+sqlalchemy>=2.0.38,<3
+psycopg[binary]>=3.2,<4
+pgvector>=0.3.6,<1
+pydantic-settings>=2.7,<3
+openai>=1.68,<3
+httpx>=0.28,<1
+pytest>=8,<9
+google-auth[requests]>=2.38,<3

@@ -1,0 +1,19 @@
+# Build with NEXT_PUBLIC_API_URL set to the deployed API URL. This public value
+# is baked into the browser bundle and must never contain an API credential.
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: reme-web
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: "10"
+    spec:
+      serviceAccountName: reme-web@PROJECT_ID.iam.gserviceaccount.com
+      containers:
+        - image: REGION-docker.pkg.dev/PROJECT_ID/reme/reme-web:latest
+          ports:
+            - containerPort: 8080

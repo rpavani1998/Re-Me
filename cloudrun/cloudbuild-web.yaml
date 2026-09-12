@@ -1,0 +1,15 @@
+# Invoke from the repository root. _NEXT_PUBLIC_API_URL is intentionally public
+# browser configuration; keep runtime credentials out of all build substitutions.
+substitutions:
+  _IMAGE: REGION-docker.pkg.dev/PROJECT_ID/reme/reme-web:latest
+  _NEXT_PUBLIC_API_URL: https://reme-api-PROJECT_ID.REGION.run.app
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --file=web/Dockerfile
+      - --build-arg=NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}
+      - --tag=${_IMAGE}
+      - .
+images:
+  - ${_IMAGE}
